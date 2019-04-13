@@ -1,6 +1,6 @@
 #include <avakar/seri.h>
 #include <catch2/catch.hpp>
-using namespace avakar;
+using namespace avakar::seri;
 
 TEST_CASE("little") {
 	static constexpr uint8_t data[] = { 1, 0, 0, 0 };
@@ -12,10 +12,7 @@ TEST_CASE("little") {
 }
 
 TEST_CASE("big") {
-	static constexpr uint8_t data[] = { 1, 0, 0, 0 };
-
-	u32_be_t x;
-	memcpy(&x, data, sizeof x);
+	u32_be_t x = { 1, 0, 0, 0 };
 
 	REQUIRE(x == 0x1000000);
 }
