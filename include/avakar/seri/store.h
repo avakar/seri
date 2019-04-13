@@ -24,6 +24,27 @@ auto load(uint8_t const * bytes)
 		static_assert(false, "unsuported endianity");
 }
 
+template <typename T>
+auto load_ne(uint8_t const * bytes)
+	-> std::enable_if_t<std::is_integral_v<T>, T>
+{
+	return load<endian::native, T>(bytes);
+}
+
+template <typename T>
+auto load_le(uint8_t const * bytes)
+	-> std::enable_if_t<std::is_integral_v<T>, T>
+{
+	return load<endian::little, T>(bytes);
+}
+
+template <typename T>
+auto load_be(uint8_t const * bytes)
+	-> std::enable_if_t<std::is_integral_v<T>, T>
+{
+	return load<endian::big, T>(bytes);
+}
+
 template <endian e, typename T>
 auto store(uint8_t * bytes, T value)
 	-> std::enable_if_t<std::is_integral_v<T>>
@@ -38,6 +59,27 @@ auto store(uint8_t * bytes, T value)
 		serialize_be<T>(bytes, value);
 	else
 		static_assert(false, "unsuported endianity");
+}
+
+template <typename T>
+auto store_ne(uint8_t * bytes, T value)
+	-> std::enable_if_t<std::is_integral_v<T>>
+{
+	store<endian::native>(bytes, value);
+}
+
+template <typename T>
+auto store_le(uint8_t * bytes, T value)
+	-> std::enable_if_t<std::is_integral_v<T>>
+{
+	store<endian::little>(bytes, value);
+}
+
+template <typename T>
+auto store_be(uint8_t * bytes, T value)
+	-> std::enable_if_t<std::is_integral_v<T>>
+{
+	store<endian::big>(bytes, value);
 }
 
 }
