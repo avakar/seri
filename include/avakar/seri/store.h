@@ -10,7 +10,7 @@ namespace avakar::seri {
 
 template <endian e, typename T>
 auto load(uint8_t const * bytes)
-	-> std::enable_if_t<std::is_integral_v<T>, T>
+	-> std::enable_if_t<std::is_integral_v<T> || std::is_enum_v<T>, T>
 {
 	if constexpr (e == endian::native)
 		return deserialize_ne<T>(bytes);
