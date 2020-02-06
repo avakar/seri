@@ -12,6 +12,8 @@ template <endian e, typename T>
 auto load(uint8_t const * bytes)
 	-> std::enable_if_t<std::is_integral_v<T> || std::is_enum_v<T>, T>
 {
+	static_assert(e == endian::native || e == endian::reverse
+		|| e == endian::little || e == endian::big, "unsuported endianity");
 	if constexpr (e == endian::native)
 		return deserialize_ne<T>(bytes);
 	else if constexpr (e == endian::reverse)
@@ -20,8 +22,6 @@ auto load(uint8_t const * bytes)
 		return deserialize_le<T>(bytes);
 	else if constexpr (e == endian::big)
 		return deserialize_be<T>(bytes);
-	else
-		static_assert(false, "unsuported endianity");
 }
 
 template <typename T>
@@ -49,6 +49,8 @@ template <endian e, typename T>
 auto store(uint8_t * bytes, T value)
 	-> std::enable_if_t<std::is_integral_v<T>>
 {
+	static_assert(e == endian::native || e == endian::reverse
+		|| e == endian::little || e == endian::big, "unsuported endianity");
 	if constexpr (e == endian::native)
 		serialize_ne<T>(bytes, value);
 	else if constexpr (e == endian::reverse)
@@ -57,8 +59,6 @@ auto store(uint8_t * bytes, T value)
 		serialize_le<T>(bytes, value);
 	else if constexpr (e == endian::big)
 		serialize_be<T>(bytes, value);
-	else
-		static_assert(false, "unsuported endianity");
 }
 
 template <typename T>
