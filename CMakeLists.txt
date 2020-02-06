@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.12)
 project(avakar_seri CXX)
 
-add_library(avakar_libseri INTERFACE)
-target_compile_features(avakar_libseri INTERFACE cxx_std_17)
-target_include_directories(avakar_libseri INTERFACE include)
+add_library(avakar_seri INTERFACE)
+target_compile_features(avakar_seri INTERFACE cxx_std_17)
+target_include_directories(avakar_seri INTERFACE include)
 
 if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.13")
 	cmake_policy(SET CMP0076 NEW)
-	target_sources(avakar_libseri INTERFACE
+	target_sources(avakar_seri INTERFACE
 		include/avakar/seri/endian.h
 		include/avakar/seri/packed_int.h
 		include/avakar/seri/serialize.h
@@ -16,6 +16,8 @@ if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.13")
 		include/avakar/seri.h
 		)
 endif()
+
+add_library(avakar::seri ALIAS avakar_seri)
 
 include(CTest)
 
@@ -36,11 +38,11 @@ if (BUILD_TESTING)
 
 	include(${catch2_SOURCE_DIR}/contrib/Catch.cmake)
 
-	add_executable(avakar_libseri_test EXCLUDE_FROM_ALL
+	add_executable(avakar_seri_test EXCLUDE_FROM_ALL
 		test/test.cpp
 		test/test1.cpp
 		)
-	target_link_libraries(avakar_libseri_test PUBLIC avakar_libseri Catch2::Catch2)
+	target_link_libraries(avakar_seri_test PUBLIC avakar::seri Catch2::Catch2)
 
-	catch_discover_tests(avakar_libseri_test)
+	catch_discover_tests(avakar_seri_test)
 endif()
