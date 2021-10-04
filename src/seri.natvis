@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Intrinsic Name="swap2" Expression="(x >> 8)|((x &lt;&lt; 8) &amp; 0xff00)">
+    <Parameter Name="x" Type="unsigned __int16"/>
+  </Intrinsic>
+
+  <Intrinsic Name="swap4" Expression="((unsigned __int32)swap2(x) &lt;&lt; 16) | swap2(x >> 16)">
+    <Parameter Name="x" Type="unsigned __int32"/>
+  </Intrinsic>
+
+  <Intrinsic Name="swap8" Expression="((unsigned __int64)swap4(x) &lt;&lt; 32) | swap4(x >> 32)">
+    <Parameter Name="x" Type="unsigned __int64"/>
+  </Intrinsic>
+
+  <Type Name="avakar::seri::packed_int&lt;*, *&gt;">
+    <DisplayString Condition="$T1 == 0">{ *($T2 *)this }</DisplayString>
+    <DisplayString Condition="$T1 == 1 &amp;&amp; sizeof($T2) == 1">{ ($T2)*(unsigned __int8 *)this }</DisplayString>
+    <DisplayString Condition="$T1 == 1 &amp;&amp; sizeof($T2) == 2">{ ($T2)swap2(*(unsigned __int16 *)this) }</DisplayString>
+    <DisplayString Condition="$T1 == 1 &amp;&amp; sizeof($T2) == 4">{ ($T2)swap4(*(unsigned __int32 *)this) }</DisplayString>
+    <DisplayString Condition="$T1 == 1 &amp;&amp; sizeof($T2) == 8">{ ($T2)swap8(*(unsigned __int64 *)this) }</DisplayString>
+    <DisplayString>{bytes,[sizeof($T2)]}</DisplayString>
+
+    <Expand HideRawView="true">
+      <ExpandedItem>bytes</ExpandedItem>
+    </Expand>
+  </Type>
+</AutoVisualizer>

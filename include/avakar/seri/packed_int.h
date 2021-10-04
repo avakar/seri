@@ -3,6 +3,7 @@
 
 #include "endian.h"
 #include "store.h"
+#include <cstddef>
 #include <type_traits>
 
 namespace avakar::seri {
@@ -22,7 +23,7 @@ struct _is_byte_pack<A0, An...>
 {
 };
 
-template <endian e, typename T>
+template <endian e, typename T, std::size_t size = sizeof(T), std::size_t align = 1>
 struct packed_int
 {
 	packed_int()
@@ -52,7 +53,7 @@ struct packed_int
 		return *this;
 	}
 
-	uint8_t bytes[sizeof(T)];
+	alignas(align) uint8_t bytes[size];
 };
 
 template <typename T>
