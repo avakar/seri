@@ -18,8 +18,5 @@ jobs:
         cd _build
         cmake ..
     - name: Build
-      run: cmake --build . --target avakar_seri_test
-      working-directory: _build
-    - name: Run tests
-      run: ctest
+      run: cmake --build .
       working-directory: _build
